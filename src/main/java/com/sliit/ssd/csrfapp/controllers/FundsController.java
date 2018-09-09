@@ -6,11 +6,13 @@ import com.sliit.ssd.csrfapp.services.AuthenticationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
@@ -18,25 +20,28 @@ import java.io.IOException;
  *
  * Created by dinukshakandasamanage on 9/6/18.
  */
-@RestController
+@Controller
 public class FundsController {
 
-    private static Logger logger = LoggerFactory.getLogger(AuthenticationService.class);
+    private static Logger logger = LoggerFactory.getLogger(FundsController.class);
 
     @Autowired
     AuthenticationService authenticationService;
 
     @PostMapping("/transfer")
-    public String transferFunds(@ModelAttribute FundTransfer fundTransfer, HttpServletRequest request) throws UnauthorizedException, IOException {
+    public String transferFunds(@ModelAttribute FundTransfer fundTransfer, HttpServletRequest request, HttpServletResponse response) throws IOException {
 
-        logger.info("Request received for CSRF token...");
+        logger.info("Request received for transferFunds...");
         logger.info("Authenticating user session...");
 
         if (authenticationService.isAuthenticated(request.getCookies(), fundTransfer.getCsrf())){
-            return "success";
+            logger.error("Success..");
+            return "redirect:/home?status=success";
+
+//            return "success";
         }
         logger.error("User not authenticated!!!");
-        throw new UnauthorizedException();
+        return "redirect:/home?status=failed";
     }
 
 

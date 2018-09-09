@@ -502,6 +502,22 @@ iframe {
   width: 100%;
 }
 
+.container-status-msg{
+  color: #e24d4d;
+  margin-bottom: 5%;
+  margin-top: 9%;
+  text-align: center;
+  visibility: hidden;
+}
+
+.error-msg{
+  color: #e24d4d;
+}
+
+.success-msg{
+  color: mediumseagreen;
+}
+
 .login100-form-logo{
   width: 70%;
 }

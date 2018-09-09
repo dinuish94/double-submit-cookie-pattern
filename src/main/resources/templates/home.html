@@ -5,7 +5,6 @@
     <title>Title</title>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <!--<script src="http://malsup.github.com/jquery.form.js"></script>-->
 
     <!--===============================================================================================-->
     <link rel="icon" type="image/png" href="images/icons/favicon.ico"/>
@@ -31,12 +30,6 @@
     <!--===============================================================================================-->
 </head>
 <body>
-
-<!--<form action="#" th:action="@{/transfer}" th:object="${home}" method="post" id="transferForm">-->
-    <!--To: <input type="text" name="to" th:field="*{to}">-->
-    <!--From: <input type="text" name="from" th:field="*{from}">-->
-    <!--<input type="submit" name="submit" value="submit" id="submit-btn">-->
-<!--</form>-->
     <div class="limiter">
         <div class="container-login100">
             <div class="wrap-transfer100">
@@ -61,10 +54,13 @@
                     </div>
 
                     <div class="container-login100-form-btn">
-                        <!--<div class="wrap-login100-form-btn">-->
-                        <!--<div class="login100-form-bgbtn"></div>-->
                         <input type="submit" name="submit" value="Transfer" class="container-login100-submit-btn" id="submit-btn">
-                        <!--</div>-->
+                    </div>
+                    <div class="container-status-msg error-msg">
+                        <span class="status-msg" id="failed-error">Sorry, unable to process your request!</span>
+                    </div>
+                    <div class="container-status-msg success-msg">
+                        <span class="status-msg" id="success-message">Transaction completed successfully!</span>
                     </div>
                 </form>
             </div>
@@ -72,8 +68,31 @@
     </div>
 
     <script>
+
+        function getParameterByName(name, url) {
+            if (!url) url = window.location.href;
+            name = name.replace(/[\[\]]/g, '\\$&');
+            var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+                results = regex.exec(url);
+            if (!results) return null;
+            if (!results[2]) return '';
+            return decodeURIComponent(results[2].replace(/\+/g, ' '));
+        }
+
         window.addEventListener('load', function() {
-            console.log('All assets are loaded')
+            var error = document.getElementById("failed-error");
+            var success = document.getElementById("success-message");
+
+            if (getParameterByName("status") && getParameterByName("status") === "failed"){
+                error.style.visibility = "visible" ;
+            } else if (getParameterByName("status") && getParameterByName("status") === "success"){
+                success.style.visibility = "visible" ;
+            } else {
+                success.style.visibility = "hidden";
+                error.style.visibility = "hidden" ;
+            }
+
+            // Retrieving the cookie
             var csrf = document.cookie.replace(/(?:(?:^|.*;\s*)Csrf-token\s*\=\s*([^;]*).*$)|^.*$/, "$1");
             $("#submit-btn").before('<input type="hidden" name="csrf" value="'+csrf+'">');
         })
