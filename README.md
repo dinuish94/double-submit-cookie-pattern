@@ -1,6 +1,6 @@
 # double-submit-cookie-pattern
 
-Simple implementation of Synchronizer Token Pattern to prevent CSRF using Java Spring Boot
+Simple implementation of Double Submit Cookie Pattern to prevent CSRF using Java Spring Boot
 
 ## Steps to run
 1. Build the project using `mvn clean install`
